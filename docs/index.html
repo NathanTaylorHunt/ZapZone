@@ -3,87 +3,14 @@
 <head>
 	<title>Channel Surf</title>
 	<link rel="stylesheet" type="text/css" href="css/default.css" />
+
+	<script src="https://www.youtube.com/iframe_api"></script>
 	<script src="js/jquery-3.2.1.min.js"></script>
+	<script src="js/video_loader.js"></script>
 </head>
 <body>
-<div id="container">
-
-</div>
+	<div id="container"></div>
 <script>
-
-function genId()
-{
-	var text = "";
-	var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-
-	var l = 3 + Math.floor(Math.random() * 2);
-	for (var i = 0; i < l; i++)
-		text += possible.charAt(Math.floor(Math.random() * possible.length));
-
-	return text;
-}
-
-// Load IFrame API asynchronously.
-var tag = document.createElement('script');
-tag.src = "https://www.youtube.com/iframe_api";
-var firstScriptTag = document.getElementsByTagName('script')[0];
-firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-
-// Create IFrame
-var player;
-function onYouTubeIframeAPIReady()
-{
-	$('iframe#player').remove();
-	$('#container').append($('<div>', {id: 'player'}));
-
-	var term = genId();
-	console.log("searching: " + term);
-	var resultLimit = 50;
-	url = 'https://www.googleapis.com/youtube/v3/search';
-	var params = {
-		part: 'snippet',
-		key: 'AIzaSyDAKDaBy_JDwcScSHqDQimOOLjdPImLanc',
-		q: term,
-		maxResults: resultLimit,
-		type: 'video',
-		videoEmbeddable: 'true',
-		videoSyndicated: 'true',
-		safeSearch: 'moderate'
-	};
-
-	$.getJSON(url, params, function (searchTerm) {
-
-		console.log(searchTerm.items.length);
-		if (searchTerm.items.length == 0)
-		{
-			onYouTubeIframeAPIReady();
-			return;
-		}
-		index = Math.floor(Math.random() * searchTerm.items.length);
-		console.log(index);
-
-		player = new YT.Player('player', {
-			height: '360',
-			width: '720',
-			videoId: searchTerm.items[index].id.videoId,
-			events: {
-				'onReady': onPlayerReady,
-				'onStateChange': onPlayerStateChange,
-			},
-			playerVars: {
-				'autoplay': 1,
-				'color': 'white',
-				'controls': 0,
-				'disablekb': 1,
-				'enablejsapi': 1,
-				'iv_load_policy': 3,
-				'modestbranding': 1,
-				'rel': 0,
-				'showinfo': 0
-			}
-		});
-	});
-}
 
 function onPlayerReady(event)
 {
@@ -104,21 +31,10 @@ function onPlayerStateChange(event)
 
 $(document).keypress(function() {
 	console.log("press");
-	onYouTubeIframeAPIReady();
+	//onYouTubeIframeAPIReady();
 });
 
 </script>
-
-<script>
-function getRequest(searchTerm) {
-	
-}
-
-$(document).ready(function() {
-	getRequest("dogs");
-});
-</script>
-
 
 </body>
 </html>
