@@ -20,14 +20,14 @@ function generateCode() {
 /**
  * Load a YouTube video and return the player object.
  **/
-function loadVideo(onPlayerReady, onPlayerStateChange) {
+function loadVideo(divId, onPlayerReady, onPlayerStateChange) {
 	var player;
 	var searchTerm = generateCode();
 
 	console.log("Searching for: '" + searchTerm + "'");
 	var resultLimit = 50; // MAX for YouTube API.
 	var url = 'https://www.googleapis.com/youtube/v3/search';
-	var apiKey = 'AIzaSyBxXAIs6riiFaKq0soAPJkh82q5_wocrxw';
+	var apiKey = 'AIzaSyAQ3rs4EQAvgS9p73BaOBtbJzPwfmCbuOA'; // 'AIzaSyDAKDaBy_JDwcScSHqDQimOOLjdPImLanc'; // 'AIzaSyBxXAIs6riiFaKq0soAPJkh82q5_wocrxw';
 	var params = {
 		part: 'snippet',
 		key: apiKey,
@@ -44,10 +44,10 @@ function loadVideo(onPlayerReady, onPlayerStateChange) {
 		if (searchResults.items.length == 0)
 			return loadVideo();
 
-		var index = random(searchTerm.items.length);
+		var index = random(searchResults.items.length);
 		console.log("Picking video #" + index);
 
-		player = new YT.Player('player', {
+		player = new YT.Player(divId, {
 			width: '720',
 			height: '360',
 			videoId: searchResults.items[index].id.videoId,

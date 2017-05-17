@@ -31,8 +31,36 @@ function onPlayerStateChange(event)
 
 $(document).keypress(function() {
 	console.log("press");
-	//onYouTubeIframeAPIReady();
+	temp();
 });
+
+function onYouTubeIframeAPIReady()
+{
+	temp();
+}
+
+function temp()
+{
+
+	$('iframe#player').remove();
+	$('#container').append($('<div>', {id: 'player'}));
+
+	var player = loadVideo('player',
+		function(event) {
+			event.target.playVideo();
+		},
+		function(event) {
+			var state = event.target.getPlayerState();
+			if (state == 0) { // ended
+				//
+			}
+			if (state == -1) { // unstarted (error)
+				//
+			}
+		}
+	);
+
+}
 
 </script>
 
