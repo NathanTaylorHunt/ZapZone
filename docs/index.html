@@ -1,65 +1,43 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>ZapZone</title>
-	<link rel="stylesheet" type="text/css" href="css/default.css" />
+  <title>ZapZone</title>
+  <link rel="stylesheet" type="text/css" href="css/default.css" />
 
-	<script src="https://www.youtube.com/iframe_api"></script>
-	<script src="js/jquery-3.2.1.min.js"></script>
-	<script src="js/video_loader.js"></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="js/jquery-3.2.1.min.js"></script>
+  <script src="js/video_loader.js"></script>
 </head>
 <body>
-	<div id="container"></div>
+  <div id="container"></div>
 <script>
 
-function onPlayerReady(event)
-{
-	//event.target.playVideo();
-}
-
-function onPlayerStateChange(event)
-{
-	console.log(event.target.getDuration() / 60 + " mins");
-	console.log(event.target.getPlayerState());
-	if (event.target.getPlayerState() == 0) { // ended
-		onYouTubeIframeAPIReady();
-	}
-	if (event.target.getPlayerState() == -1) { // unstarted
-		onYouTubeIframeAPIReady();
-	} 
-}
-
 $(document).keypress(function() {
-	console.log("press");
-	temp();
+  refreshVideo();
 });
 
-function onYouTubeIframeAPIReady()
-{
-	temp();
+function onYouTubeIframeAPIReady() {
+  refreshVideo();
 }
 
-function temp()
-{
+function refreshVideo() {
+  $('iframe#player').remove();
+  $('#container').append($('<div>', {id: 'player'}));
 
-	$('iframe#player').remove();
-	$('#container').append($('<div>', {id: 'player'}));
-
-	var player = loadVideo('player',
-		function(event) {
-			event.target.playVideo();
-		},
-		function(event) {
-			var state = event.target.getPlayerState();
-			if (state == 0) { // ended
-				//
-			}
-			if (state == -1) { // unstarted (error)
-				//
-			}
-		}
-	);
-
+  var player = loadVideo('player',
+    // onPlayerReady
+    function(event) {
+      event.target.playVideo();
+    },
+    // onPlayerStateChange
+    function(event) {
+      var state = event.target.getPlayerState();
+      console.log(state);
+      if (state == 0) { // ended
+        refreshVideo();
+      }
+    }
+  );
 }
 
 </script>
